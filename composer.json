@@ -1,0 +1,5 @@
+{
+    "require": {
+        "midorikocak/nano": "^1.3"
+    }
+}
