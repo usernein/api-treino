@@ -2,11 +2,13 @@
 /** TODO
  * 3. Reduzir registerUser
  * 6. Trocar require por uso de namespaces
- * 7. Criar endpoints de seller (lojistas)
  *
  * 8. Teste unitário
  */
 require_once 'storage.php';
+define("USER_TYPE_CONSUMER", "consumer");
+define("USER_TYPE_SELLER", "seller");
+
 class User
 {
     private Storage $storage;
@@ -18,7 +20,7 @@ class User
 
     public function registerUser(array $userFields) : bool
     {
-        if (!isset($userFields['name']) || !isset($userFields['document'])) {
+        if (!isset($userFields['name']) || !isset($userFields['document']) || !isset($userFields['type'])) {
             throw new UserAPINotEnoughData();
         }
 
@@ -26,10 +28,14 @@ class User
             'id' => uniqid(),
             'name' => $userFields['name'],
             'balance' => 0,
-            'document' => (int)$userFields['document']
+            'document' => (int)$userFields['document'],
+            'type' => $userFields['type'],
         ];
-        if (!$userData['name'] or !is_string($userData["name"])) {
+        if (!$userData['name'] || !is_string($userData["name"])) {
             throw new UserAPIInvalidData("name");
+        }
+        if (!$userData['type'] || !is_string($userData["type"]) || !in_array($userData['type'], [USER_TYPE_CONSUMER, USER_TYPE_SELLER])) {
+            throw new UserAPIInvalidData("type");
         }
         if (!$userData['document']) {
             throw new UserAPIInvalidData("document");
@@ -53,9 +59,33 @@ class User
         return $this->storage[$id] ?? null;
     }
 
+    public function getConsumers() : array
+    {
+        return array_filter($this->storage->data, fn($user) => $user['type'] == USER_TYPE_CONSUMER);
+    }
+
+    public function getSellers() : array
+    {
+        return array_filter($this->storage->data, fn($user) => $user['type'] == USER_TYPE_SELLER);
+    }
+
     public function totalOfUsers() : int
     {
         return count($this->storage->data);
+    }
+
+    public function totalOfConsumers() : int
+    {
+        return count(
+            $this->getConsumers()
+        );
+    }
+
+    public function totalOfSellers() : int
+    {
+        return count(
+            $this->getSellers()
+        );
     }
 
     public function deleteUser(string $id) : bool
@@ -69,6 +99,12 @@ class User
 }
 
 class UserAPIException extends Exception {}
-class UserAPINotEnoughData extends UserAPIException {}
-class UserAPIDuplicatedData extends UserAPIException {}
-class UserAPIInvalidData extends UserAPIException {}
+class UserAPINotEnoughData extends UserAPIException {
+    public string $error = "insufficient_data";
+}
+class UserAPIDuplicatedData extends UserAPIException {
+    public string $error = "duplicated_data";
+}
+class UserAPIInvalidData extends UserAPIException {
+    public string $error = "invalid_data";
+}
