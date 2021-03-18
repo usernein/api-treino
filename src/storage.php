@@ -1,5 +1,7 @@
 <?php
-class Storage implements ArrayAccess
+namespace API;
+
+class Storage implements \ArrayAccess
 {
     public array $data = [];
     private string $JSONPath;

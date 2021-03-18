@@ -1,9 +1,9 @@
 <?php
-require __DIR__.'/vendor/autoload.php';
-require __DIR__.'/users.php';
+namespace API;
+require __DIR__ . '/../vendor/autoload.php';
 
 use midorikocak\nano\Api;
-
+use API\Exceptions\UserAPIException;
 $api = new Api();
 $users = new User();
 
@@ -22,21 +22,21 @@ $api->get('/', function () {
 });
 
 $api->get($usersEndPoint, function () use ($users) {
-    echo json_encode($users->getUsers(), JSON_PRETTY_PRINT);
+    echo json_encode($users->getUsers());
 });
 
 $api->get($consumersEndPoint, function () use ($users) {
-    echo json_encode($users->getConsumers(), JSON_PRETTY_PRINT);
+    echo json_encode($users->getConsumers());
 });
 
 $api->get($sellersEndPoint, function () use ($users) {
-    echo json_encode($users->getSellers(), JSON_PRETTY_PRINT);
+    echo json_encode($users->getSellers());
 });
 
 $api->post($usersEndPoint, function () use ($users) {
     $input = json_decode(file_get_contents('php://input'), true);
     try {
-        $result = $users->registerUser($input);
+        $users->registerUser($input);
     } catch (UserAPIException $e) {
         echo json_encode(['error' => $e->error, "description" => $e->getMessage()]);
         return http_response_code(HTTP_STATUS_CODE_BAD_REQUEST);
@@ -47,17 +47,17 @@ $api->post($usersEndPoint, function () use ($users) {
 });
 
 
-$api->get($sellersEndPoint.'/{id}', function ($id) use ($users) {
+$api->get($usersEndPoint.'/{id}', function ($id) use ($users) {
     $user = $users->getUserById($id);
     if (!$user) {
         echo json_encode(['error' => "id_not_found"]);
         return http_response_code(HTTP_STATUS_CODE_NOT_FOUND);
     }
-    echo json_encode($user, JSON_PRETTY_PRINT);
+    echo json_encode($user);
     return http_response_code(HTTP_STATUS_CODE_OK);
 });
 
-$api->delete($sellersEndPoint, function () use ($users) {
+$api->delete($usersEndPoint, function () use ($users) {
     $input = json_decode(file_get_contents('php://input'), true);
     $id = $input['id'];
     try {

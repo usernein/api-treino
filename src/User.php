@@ -1,14 +1,13 @@
 <?php
 /** TODO
- * 3. Reduzir registerUser
- * 6. Trocar require por uso de namespaces
- *
- * 8. Teste unitário
+ * 1. Teste unitário
  */
-require_once 'storage.php';
+namespace API;
+
 define("USER_TYPE_CONSUMER", "consumer");
 define("USER_TYPE_SELLER", "seller");
 
+use API\Exceptions\{UserAPINotEnoughData, UserAPIDuplicatedData, UserAPIInvalidData};
 class User
 {
     private Storage $storage;
@@ -96,15 +95,4 @@ class User
         unset($this->storage[$id]);
         return true;
     }
-}
-
-class UserAPIException extends Exception {}
-class UserAPINotEnoughData extends UserAPIException {
-    public string $error = "insufficient_data";
-}
-class UserAPIDuplicatedData extends UserAPIException {
-    public string $error = "duplicated_data";
-}
-class UserAPIInvalidData extends UserAPIException {
-    public string $error = "invalid_data";
 }
