@@ -1,0 +1,81 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "f117679935214176023548b933e9dfc9",
+    "packages": [
+        {
+            "name": "midorikocak/nano",
+            "version": "v1.3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/midorikocak/nano.git",
+                "reference": "b7f5f31e71accc3dd36730adcb0b4d1abf40cfd5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/midorikocak/nano/zipball/b7f5f31e71accc3dd36730adcb0b4d1abf40cfd5",
+                "reference": "b7f5f31e71accc3dd36730adcb0b4d1abf40cfd5",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": "~7.4"
+            },
+            "require-dev": {
+                "guzzlehttp/guzzle": "^6.5",
+                "opsway/psr12-strict-coding-standard": "^0.3.0",
+                "phpunit/phpunit": ">=8.0",
+                "squizlabs/php_codesniffer": "^3.5",
+                "symfony/process": "^5.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "midorikocak\\nano\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Midori Kocak",
+                    "email": "mtkocak@gmail.com",
+                    "homepage": "https://mtkocak.net",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Nano is a very very tiny php app that allows you to create very fast rest interfaces.",
+            "homepage": "https://github.com/midorikocak/nano",
+            "keywords": [
+                "api",
+                "midorikocak",
+                "nano",
+                "rest"
+            ],
+            "support": {
+                "issues": "https://github.com/midorikocak/nano/issues",
+                "source": "https://github.com/midorikocak/nano/tree/v1.3.1"
+            },
+            "time": "2020-03-04T16:23:00+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.0.0"
+}
