@@ -12,9 +12,9 @@ class User
 {
     private Storage $storage;
 
-    public function __construct()
+    public function __construct(string $JSONPath = 'users.json')
     {
-        $this->storage = new Storage('users.json');
+        $this->storage = new Storage($JSONPath);
     }
 
     public function registerUser(array $userFields) : bool
