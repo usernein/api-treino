@@ -1,3 +1,5 @@
 src/users.json
 test.json
 vendor/
+/.phpunit.result.cache
+.idea/
