@@ -17,7 +17,7 @@ class User
         $this->storage = new Storage($JSONPath);
     }
 
-    public function registerUser(array $userFields) : bool
+    public function registerUser(array $userFields) : string
     {
         if (!isset($userFields['name']) || !isset($userFields['document']) || !isset($userFields['type'])) {
             throw new UserAPINotEnoughData();
@@ -45,12 +45,12 @@ class User
             throw new UserAPIDuplicatedData();
         }
         $this->storage[$userData['id']] = $userData;
-        return true;
+        return $userData['id'];
     }
 
     public function getUsers() : array
     {
-        return array_values($this->storage->data);
+        return $this->storage->data;
     }
 
     public function getUserById($id)
