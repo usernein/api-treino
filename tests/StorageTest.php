@@ -1,5 +1,4 @@
 <?php
-namespace Tests;
 require_once __DIR__.'/../vendor/autoload.php';
 
 use API\Storage;
@@ -18,7 +17,7 @@ class StorageTest extends TestCase {
         if (file_exists(static::$JSONPath)) {
             unlink(static::$JSONPath);
         }
-        file_put_contents(static::$JSONPath, json_encode(static::$initial_values));
+        static::resetJSONFile();
     }
 
     public static function tearDownAfterClass() : void
@@ -26,14 +25,21 @@ class StorageTest extends TestCase {
         unlink(static::$JSONPath);
     }
 
+    public static function resetJSONFile() : void
+    {
+        file_put_contents(static::$JSONPath, json_encode(static::$initial_values));
+    }
+
     public function testStorageCreation() : void
     {
+        static::resetJSONFile();
         new Storage(static::$JSONPath);
         $this->assertEquals(json_encode(static::$initial_values), file_get_contents(static::$JSONPath));
     }
 
     public function testStorageSet() : void
     {
+        static::resetJSONFile();
         $storage = new Storage(static::$JSONPath);
         $storage->offsetSet("key_set", "new_value");
 
@@ -43,6 +49,7 @@ class StorageTest extends TestCase {
 
     public function testStorageGet() : void
     {
+        static::resetJSONFile();
         $storage = new Storage(static::$JSONPath);
         $this->assertEquals(
             "value_get",
@@ -52,6 +59,7 @@ class StorageTest extends TestCase {
 
     public function testStorageUnset() : void
     {
+        static::resetJSONFile();
         $storage = new Storage(static::$JSONPath);
         $storage->offsetUnset("key_unset");
 
@@ -61,6 +69,7 @@ class StorageTest extends TestCase {
 
     public function testStorageExists() : void
     {
+        static::resetJSONFile();
         $storage = new Storage(static::$JSONPath);
         $this->assertTrue($storage->offsetExists("key_get"));
     }
