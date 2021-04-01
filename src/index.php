@@ -1,4 +1,7 @@
 <?php
+/** TODO
+ * 1. endpoints de transações
+ */
 namespace API;
 require __DIR__ . '/../vendor/autoload.php';
 

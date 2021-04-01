@@ -1,7 +1,4 @@
 <?php
-/** TODO
- * 1. Transações
- */
 namespace API;
 
 use API\Exceptions\{UserAPINotEnoughData, UserAPIDuplicatedData, UserAPIInvalidData, UserAPINonexistentId};
@@ -11,7 +8,7 @@ define("USER_TYPE_SELLER", "seller");
 
 class User
 {
-    public Storage $storage;
+    private Storage $storage;
 
     public function __construct(string $JSONPath = 'users.json')
     {
