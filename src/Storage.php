@@ -14,14 +14,14 @@ class Storage implements \ArrayAccess
         $this->data = json_decode(file_get_contents($JSONPath), true);
     }
 
-    public function write(string $filename = NULL) : bool
+    public function write(string $filename = NULL): bool
     {
         $filename ??= $this->JSONPath;
         file_put_contents($filename, json_encode($this->data, JSON_PRETTY_PRINT));
         return true;
     }
 
-    public function offsetExists($offset) : bool
+    public function offsetExists($offset): bool
     {
         return isset($this->data[$offset]);
     }

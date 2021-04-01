@@ -1,23 +1,24 @@
 <?php
 /** TODO
- * 1. Teste unitário
+ * 1. Transações
  */
 namespace API;
+
+use API\Exceptions\{UserAPINotEnoughData, UserAPIDuplicatedData, UserAPIInvalidData, UserAPINonexistentId};
 
 define("USER_TYPE_CONSUMER", "consumer");
 define("USER_TYPE_SELLER", "seller");
 
-use API\Exceptions\{UserAPINotEnoughData, UserAPIDuplicatedData, UserAPIInvalidData};
 class User
 {
-    private Storage $storage;
+    public Storage $storage;
 
     public function __construct(string $JSONPath = 'users.json')
     {
         $this->storage = new Storage($JSONPath);
     }
 
-    public function registerUser(array $userFields) : string
+    public function registerUser(array $userFields): string
     {
         if (!isset($userFields['name']) || !isset($userFields['document']) || !isset($userFields['type'])) {
             throw new UserAPINotEnoughData();
@@ -48,51 +49,74 @@ class User
         return $userData['id'];
     }
 
-    public function getUsers() : array
+    public function getUsers(): array
     {
         return $this->storage->data;
     }
 
     public function getUserById($id)
     {
-        return $this->storage[$id] ?? null;
+        if (!isset($this->storage[$id])) {
+            throw new UserAPINonexistentId();
+        }
+        return $this->storage[$id];
     }
 
-    public function getConsumers() : array
+    public function getConsumers(): array
     {
         return array_filter($this->storage->data, fn($user) => $user['type'] == USER_TYPE_CONSUMER);
     }
 
-    public function getSellers() : array
+    public function getSellers(): array
     {
         return array_filter($this->storage->data, fn($user) => $user['type'] == USER_TYPE_SELLER);
     }
 
-    public function totalOfUsers() : int
+    public function totalOfUsers(): int
     {
         return count($this->storage->data);
     }
 
-    public function totalOfConsumers() : int
+    public function totalOfConsumers(): int
     {
         return count(
             $this->getConsumers()
         );
     }
 
-    public function totalOfSellers() : int
+    public function totalOfSellers(): int
     {
         return count(
             $this->getSellers()
         );
     }
 
-    public function deleteUser(string $id) : bool
+    public function deleteUser(string $id): void
     {
         if (!isset($this->storage[$id])) {
-            return false;
+            throw new UserAPINonexistentId();
         }
         unset($this->storage[$id]);
-        return true;
+    }
+
+    public function createTransaction(float $value, string $payerId, string $receiverId)
+    {
+        return new Transaction($this, $value, $payerId, $receiverId);
+    }
+
+    public function increaseUserBalance(string $id, float $value)
+    {
+        if (!isset($this->storage[$id])) {
+            throw new UserAPINonexistentId();
+        }
+        $this->storage->data[$id]["balance"] += $value;
+    }
+
+    public function decreaseUserBalance(string $id, float $value)
+    {
+        if (!isset($this->storage[$id])) {
+            throw new UserAPINonexistentId();
+        }
+        $this->storage->data[$id]["balance"] -= $value;
     }
 }
