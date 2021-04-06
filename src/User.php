@@ -51,7 +51,7 @@ class User
         return $this->storage->data;
     }
 
-    public function getUserById($id)
+    public function getUserById($id): array
     {
         if (!isset($this->storage[$id])) {
             throw new UserAPINonexistentId();
@@ -96,24 +96,26 @@ class User
         unset($this->storage[$id]);
     }
 
-    public function createTransaction(float $value, string $payerId, string $receiverId)
+    public function createTransaction(float $value, string $payerId, string $receiverId): Transaction
     {
         return new Transaction($this, $value, $payerId, $receiverId);
     }
 
-    public function increaseUserBalance(string $id, float $value)
+    public function increaseUserBalance(string $id, float $value): void
     {
         if (!isset($this->storage[$id])) {
             throw new UserAPINonexistentId();
         }
-        $this->storage->data[$id]["balance"] += $value;
+        $this->storage[$id]["balance"] += $value;
+        $this->storage->write();
     }
 
-    public function decreaseUserBalance(string $id, float $value)
+    public function decreaseUserBalance(string $id, float $value): void
     {
         if (!isset($this->storage[$id])) {
             throw new UserAPINonexistentId();
         }
-        $this->storage->data[$id]["balance"] -= $value;
+        $this->storage[$id]["balance"] -= $value;
+        $this->storage->write();
     }
 }

@@ -1,5 +1,5 @@
-src/users.json
+users.json
 test.json
 vendor/
-/.phpunit.result.cache
+.phpunit.result.cache
 .idea/

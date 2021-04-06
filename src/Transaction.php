@@ -24,8 +24,6 @@ class Transaction
     public function execute(): void
     {
         $this->verify();
-        $payer = $this->user->getUserById($this->payerId);
-        $receiver = $this->user->getUserById($this->receiverId);
         $this->user->decreaseUserBalance($this->payerId, $this->value);
         $this->user->increaseUserBalance($this->receiverId, $this->value);
     }
