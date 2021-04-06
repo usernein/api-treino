@@ -22,15 +22,15 @@ $api->get('/', function () {
 });
 
 $api->get($usersEndPoint, function () use ($users) {
-    echo json_encode($users->getUsers());
+    echo json_encode(array_values($users->getUsers()));
 });
 
 $api->get($consumersEndPoint, function () use ($users) {
-    echo json_encode($users->getConsumers());
+    echo json_encode(array_values($users->getConsumers()));
 });
 
 $api->get($sellersEndPoint, function () use ($users) {
-    echo json_encode($users->getSellers());
+    echo json_encode(array_values($users->getSellers()));
 });
 
 $api->post($usersEndPoint, function () use ($users) {
