@@ -14,11 +14,10 @@ class Storage implements \ArrayAccess
         $this->data = json_decode(file_get_contents($JSONPath), true);
     }
 
-    public function write(string $filename = NULL): bool
+    public function write(string $filename = NULL): int
     {
         $filename ??= $this->JSONPath;
-        file_put_contents($filename, json_encode($this->data, JSON_PRETTY_PRINT));
-        return true;
+        return file_put_contents($filename, json_encode($this->data, JSON_PRETTY_PRINT));
     }
 
     public function offsetExists($offset): bool
@@ -31,13 +30,13 @@ class Storage implements \ArrayAccess
         return $this->data[$offset];
     }
 
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         $this->data[$offset] = $value;
         $this->write();
     }
 
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         unset($this->data[$offset]);
         $this->write();
