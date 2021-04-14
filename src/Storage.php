@@ -17,7 +17,8 @@ class Storage implements \ArrayAccess
     public function write(string $filename = NULL): int
     {
         $filename ??= $this->JSONPath;
-        return file_put_contents($filename, json_encode($this->data, JSON_PRETTY_PRINT));
+        $writtenBytes = file_put_contents($filename, json_encode($this->data, JSON_PRETTY_PRINT));
+        return ($writtenBytes && file_get_contents($filename) == json_encode($this->data, JSON_PRETTY_PRINT));
     }
 
     public function offsetExists($offset): bool
